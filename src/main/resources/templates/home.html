@@ -1,10 +1,152 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+
+</body>
+</html>
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Online Application - Home</title>
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+
+        body {
+            background: linear-gradient(135deg, #f0f8ff, #add8e6);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0078D7;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .container h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333;
+        }
+
+
+        .btn {
+            display: block;
+            background-color: #0078D7;
+            color: white;
+            padding: 15px 30px;
+            margin: 10px auto;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #005bb5;
+        }
+
+        .btn.logout {
+            background-color: #d9534f;
+        }
+
+        .btn.logout:hover {
+            background-color: #c9302c;
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    Quiz Online Application
+</header>
+<main>
+    <div class="container">
+        <h2>Quiz App!</h2>
+        <button class="btn" onclick="startQuiz()">Start Quiz</button>
+        <button class="btn" onclick="viewResults()">View Results</button>
+        <button class="btn logout" onclick="logout()">Logout</button>
+    </div>
+</main>
+
+<script>
+    // Funcție pentru a trimite un GET request către endpoint-ul /quiz/get
+    function fetchQuizData() {
+        fetch('/quiz/get')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json(); // Parsează răspunsul în format JSON
+            })
+            .then(data => {
+                console.log("Quiz data received:", data); // Afișează datele în consolă
+            })
+            .catch(error => {
+                console.error("Error fetching quiz data:", error);
+            });
+    }
+
+    // Asigură-te că funcția este apelată când pagina se încarcă
+    document.addEventListener("DOMContentLoaded", () => {
+        console.log("Page loaded. Fetching quiz data...");
+        fetchQuizData();
+    });
+
+    function startQuiz() {
+        console.log("Start Quiz button clicked.");
+    }
+
+    function viewResults() {
+        alert("Redirecting to Results...");
+    }
+
+    function logout() {
+        alert("Logging out...");
+    }
+</script>
 
 </body>
 </html>

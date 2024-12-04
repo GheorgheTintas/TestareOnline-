@@ -1,8 +1,7 @@
 package com.example.testareonline.controller;
 
 
-
-import com.example.testareonline.model.UsersEntity;
+import com.example.testareonline.model.User;
 import com.example.testareonline.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 
@@ -67,7 +66,7 @@ public class AuthController {
 
      *
 
-     * @param usersEntity obiect de transfer continand credentialele care trebuie verificate
+     * @param user obiect de transfer continand credentialele care trebuie verificate
 
      * @return HTTP STATUS CREATED
 
@@ -75,24 +74,24 @@ public class AuthController {
 
     @PostMapping("/login")
 
-    public ResponseEntity<String> login(@RequestBody UsersEntity usersEntity,
+    public ResponseEntity<String> login(@RequestBody User user,
 
                                         HttpServletRequest request,
 
                                         HttpServletResponse response) {
-        System.out.println("++++"+usersEntity.getUsername()+"-----"+ usersEntity.getPasswordHash());
+        System.out.println("++++"+user.getUsername()+"-----"+ user.getPasswordHash());
         Authentication authenticate = authenticationManager
 
-                .authenticate(new UsernamePasswordAuthenticationToken(usersEntity.getUsername(),
+                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(),
 
-                        usersEntity.getPasswordHash()));
+                        user.getPasswordHash()));
 
         SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-        Optional<UsersEntity> usersEntityOptional = userRepository.findByUsername(usersEntity.getUsername());
-        if (usersEntityOptional.isPresent()) {
-            UsersEntity usersEntity1 = usersEntityOptional.get();
-            Cookie userCookie = new Cookie("userId", String.valueOf(usersEntity1.getId()));
+        Optional<User> userOptional = userRepository.findByUsername(user.getUsername());
+        if (userOptional.isPresent()) {
+            User user1 = userOptional.get();
+            Cookie userCookie = new Cookie("userId", String.valueOf(user1.getId()));
 
             userCookie.setMaxAge(-1); // cookie valabil pe durata sesiunii
 

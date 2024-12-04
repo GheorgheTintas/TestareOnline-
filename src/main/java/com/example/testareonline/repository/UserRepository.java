@@ -1,9 +1,8 @@
 package com.example.testareonline.repository;
-
+import com.example.testareonline.model.User;
 import org.springframework.data.repository.CrudRepository;
-import com.example.testareonline.model.UsersEntity;
 
 import java.util.Optional;
 
-public interface UserRepository extends CrudRepository<UsersEntity, Long> {
-    Optional<UsersEntity> findByUsername(String loginUserName);}
+public interface UserRepository extends CrudRepository<User, Long> {
+    Optional<User> findByUsername(String loginUserName);}

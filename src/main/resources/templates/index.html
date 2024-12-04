@@ -43,7 +43,7 @@
     });
 
     function submitLoginForm() {
-        const usersEntity = {
+        const user = {
             username: $("#username").val(),
             passwordHash: $("#password").val()
         };
@@ -52,7 +52,7 @@
             type: "POST",
             url: "/login",
             contentType: "application/json",
-            data: JSON.stringify(usersEntity),
+            data: JSON.stringify(user),
             success: () => {
                 console.log("Login successful");
                 // Redirect to /home
