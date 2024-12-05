@@ -29,6 +29,7 @@ public class Intrebare {
         this.idQuiz = idQuiz;
     }
 
+
     @Basic
     @Column(name = "descriere_intrebare")
     private String descriereIntrebare;
@@ -138,4 +139,16 @@ public class Intrebare {
         result = 31 * result + (variantaRaspunsCorecta != null ? variantaRaspunsCorecta.hashCode() : 0);
         return result;
     }
+    public Intrebare(){}
+    public Intrebare(Intrebare original) {
+        this.id = original.id;
+        this.idQuiz = original.idQuiz;
+        this.descriereIntrebare = original.descriereIntrebare;
+        this.variantaRaspuns1 = original.variantaRaspuns1;// Referință la aceeași listă
+        this.variantaRaspuns2 = original.variantaRaspuns2;
+        this.variantaRaspuns3 = original.variantaRaspuns3;
+        this.variantaRaspuns4 = original.variantaRaspuns4;
+        this.variantaRaspunsCorecta = original.variantaRaspunsCorecta;
+    }
+
 }

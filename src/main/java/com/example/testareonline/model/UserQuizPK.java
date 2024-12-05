@@ -9,11 +9,9 @@ import java.io.Serializable;
 public class UserQuizPK implements Serializable {
     @Column(name = "id_quiz")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idQuiz;
     @Column(name = "id_user_participant")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUserParticipant;
 
     public long getIdQuiz() {

@@ -6,11 +6,10 @@ import javax.persistence.*;
 @Table(name = "user_quiz", schema = "testareonline", catalog = "")
 @IdClass(UserQuizPK.class)
 public class UserQuiz {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     @Id
     @Column(name = "id_quiz")
     private long idQuiz;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id_user_participant")
     private long idUserParticipant;
