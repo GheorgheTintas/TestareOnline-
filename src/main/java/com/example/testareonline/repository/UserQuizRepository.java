@@ -8,4 +8,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserQuizRepository extends CrudRepository<UserQuiz, UserQuizPK> {
     boolean existsByIdQuizAndIdUserParticipant(long quizId, long idUserParticipant);
+    boolean existsById(UserQuizPK userQuizPK);
+    void deleteById(UserQuizPK userQuizPK);
+
 }

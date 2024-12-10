@@ -9,11 +9,9 @@ import java.io.Serializable;
 public class RaspunsIntrebareUserPK implements Serializable {
     @Column(name = "id_user")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idUser;
     @Column(name = "id_intrebare")
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long idIntrebare;
 
     public long getIdUser() {
