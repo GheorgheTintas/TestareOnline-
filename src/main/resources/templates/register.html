@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Pagina de Autentificare</title>
+    <title>Pagina de Înregistrare</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
@@ -13,20 +13,24 @@
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">
-                    Autentificare
+                    Înregistrare
                 </div>
                 <div class="card-body">
                     <div class="form-group">
                         <label for="username">Nume utilizator</label>
-                        <input type="text" class="form-control" id="username" placeholder="Introduceți numele de utilizator">
+                        <input type="text" class="form-control" id="username"
+                               placeholder="Introduceți numele de utilizator">
                     </div>
                     <div class="form-group">
                         <label for="password">Parolă</label>
                         <input type="password" class="form-control" id="password" placeholder="Introduceți parola">
                     </div>
-                    <button class="btn btn-primary" id="submitBtn">Autentificare</button>
-                    <hr>
-                    <p>Nu aveți un cont? <a href="/page/register">Înregistrați-vă aici</a></p> <!-- Link către pagina de înregistrare -->
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmați parola</label>
+                        <input type="password" class="form-control" id="confirmPassword"
+                               placeholder="Confirmați parola">
+                    </div>
+                    <button class="btn btn-primary" id="submitBtn">Înregistrare</button>
                 </div>
             </div>
         </div>
@@ -41,19 +45,32 @@
     document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("submitBtn").addEventListener("click", (event) => {
             event.preventDefault();
-            submitLoginForm();
+            submitRegistrationForm();
         });
     });
 
-    function submitLoginForm() {
+    function submitRegistrationForm() {
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        // Validate form
+        if (!username || !password || !confirmPassword) {
+            alert("Completați toate câmpurile.");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Parolele nu se potrivesc.");
+            return;
+        }
+
         const credentialeDTO = {
-            username: document.getElementById("username").value,
-            parola: document.getElementById("password").value
+            username: username,
+            parola: password
         };
 
-        console.log(credentialeDTO);
-
-        fetch("/login", {
+        fetch("/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -62,11 +79,11 @@
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Autentificare reușită");
-                    window.location.href = "/page/home";
+                    console.log("Înregistrare reușită");
+                    window.location.href = "/";
                 } else {
                     response.json().then(data => {
-                        alert(data.message || "Autentificare eșuată. Vă rugăm să verificați datele.");
+                        alert(data.message || "Înregistrare eșuată. Vă rugăm să încercați din nou.");
                     });
                 }
             })
@@ -77,5 +94,4 @@
     }
 </script>
 </body>
-
 </html>

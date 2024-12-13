@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Quiz Questions</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+<div class="container mt-5">
+    <h2 id="quizTitle">Quiz</h2>
+    <div id="questionsContainer" class="mt-4"></div>
+    <button id="submitQuiz" class="btn btn-success mt-3">Trimite raspunsuri</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+    // Declare intrebari globally so it's accessible in the submit logic
+    let intrebari = [];
+
+    // Extract quizId from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const idQuiz = urlParams.get("idQuiz");
+
+    if (!idQuiz) {
+        alert("Invalid Quiz ID.");
+        window.location.href = "/page/home"; // Redirect to homepage
+    }
+
+    // Fetch questions from backend
+    fetch(`/intrebare/get/intrebari/${idQuiz}`)
+        .then(response => response.json())
+        .then(data => {
+            intrebari = data; // Store fetched questions into global variable
+
+            if (!intrebari || intrebari.length === 0) {
+                document.getElementById("questionsContainer").innerHTML = "<p>Nu au fost găsite întrebări pentru acest test.</p>";
+                return;
+            }
+
+            // Populate questions on the page
+            const container = document.getElementById("questionsContainer");
+            intrebari.forEach((intrebare, index) => {
+                const questionElement = `
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Întrebarea ${index + 1}
+                        </div>
+                        <div class="card-body">
+                            <h5>${intrebare.descriereIntrebare}</h5>
+                            <div>
+                                <!-- Static answers -->
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="question${index}" value="0" id="question${index}_answer0">
+                                    <label class="form-check-label" for="question${index}_answer0">
+                                        ${intrebare.variantaRaspuns1}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="question${index}" value="1" id="question${index}_answer1">
+                                    <label class="form-check-label" for="question${index}_answer1">
+                                        ${intrebare.variantaRaspuns2}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="question${index}" value="2" id="question${index}_answer2">
+                                    <label class="form-check-label" for="question${index}_answer2">
+                                        ${intrebare.variantaRaspuns3}
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="question${index}" value="3" id="question${index}_answer3">
+                                    <label class="form-check-label" for="question${index}_answer3">
+                                        ${intrebare.variantaRaspuns4}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += questionElement;
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching quiz questions:", error);
+            document.getElementById("questionsContainer").innerHTML = "<p>Eroare la încărcarea întrebărilor.</p>";
+        });
+
+    // Submit quiz answers
+    document.getElementById("submitQuiz").addEventListener("click", () => {
+        const raspunsuri = [];
+        const questions = document.querySelectorAll("#questionsContainer .card");
+        let allAnswered = true; // Flag to track if all questions are answered
+
+        questions.forEach((question, index) => {
+            const selectedAnswer = document.querySelector(`input[name="question${index}"]:checked`);
+
+            // If no answer is selected for this question, mark it as incomplete
+            if (selectedAnswer) {
+                // Get the label text next to the selected radio button
+                const answerLabel = document.querySelector(`label[for="${selectedAnswer.id}"]`).textContent.trim();
+
+                raspunsuri.push({
+                    idIntrebare: intrebari[index].id, // Ensure you're using the correct question ID
+                    raspunsDat: answerLabel // Use the label text as the answer
+                });
+            } else {
+                allAnswered = false; // Mark as incomplete if no answer is selected
+            }
+        });
+
+        // If not all questions are answered, show an alert and prevent submission
+        if (!allAnswered) {
+            alert("Toate întrebările sunt obligatorii. Vă rugăm să răspundeți la toate întrebările.");
+            return;
+        }
+
+        // Send answers to backend
+        fetch(`/raspunsuri_intrebari/trimite/${idQuiz}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(raspunsuri)
+        })
+            .then(response => response.json())
+            .then(punctaj => {
+                alert("Test finalizat. Punctaj: " + punctaj);
+                window.location.href = "/page/home"; // Redirect to home page
+            })
+            .catch(error => {
+                console.error("Error submitting quiz answers:", error);
+                alert("Eroare la trimiterea răspunsurilor.");
+            });
+    });
+
+</script>
+</body>
+
+</html>

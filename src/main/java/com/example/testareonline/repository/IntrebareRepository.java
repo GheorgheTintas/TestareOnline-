@@ -7,5 +7,5 @@ import java.util.List;
 
 @Repository
 public interface IntrebareRepository extends CrudRepository<Intrebare, Long> {
-    List<Intrebare> findByIdQuiz(long quizId);
+    List<Intrebare> findByIdQuiz(long idQuiz);
 }

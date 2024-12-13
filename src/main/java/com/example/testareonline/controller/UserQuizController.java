@@ -13,6 +13,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Optional;
+
 @RestController
 @RequestMapping(value="/user_quiz")
 public class UserQuizController {
@@ -20,8 +21,9 @@ public class UserQuizController {
     private UserQuizRepository userQuizRepository;
     @Autowired
     private QuizRepository quizRepository;
-    @PostMapping("/adauga")
-    public ResponseEntity<Object> joinQuiz(HttpServletRequest request, @RequestParam long idQuiz) {
+
+    @PostMapping("/adauga/{idQuiz}")
+    public ResponseEntity<Object> joinQuiz(HttpServletRequest request, @PathVariable long idQuiz) {
         Optional<Cookie> userCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> "userId".equals(cookie.getName()))
                 .findFirst();
@@ -30,9 +32,9 @@ public class UserQuizController {
             return ResponseEntity.status(403).body("Access denied: User not authenticated.");
         }
 
-        long idUserParticipant;
+        long idUser;
         try {
-            idUserParticipant = Long.parseLong(userCookie.get().getValue());
+            idUser = Long.parseLong(userCookie.get().getValue());
         } catch (NumberFormatException e) {
             return ResponseEntity.badRequest().body("Invalid user ID in cookie.");
         }
@@ -40,7 +42,7 @@ public class UserQuizController {
         // Check if the user is already joined to the quiz
         UserQuizPK userQuizPK = new UserQuizPK();
         userQuizPK.setIdQuiz(idQuiz);
-        userQuizPK.setIdUserParticipant(idUserParticipant);
+        userQuizPK.setIdUserParticipant(idUser);
 
         if (userQuizRepository.existsById(userQuizPK)) {
             return ResponseEntity.status(400).body("User is already joined to this quiz.");
@@ -48,15 +50,16 @@ public class UserQuizController {
 
         UserQuiz userQuiz = new UserQuiz();
         userQuiz.setIdQuiz(idQuiz);
-        userQuiz.setIdUserParticipant(idUserParticipant);
+        userQuiz.setIdUserParticipant(idUser);
         userQuiz.setPunctaj(-1);
 
         UserQuiz userQuizSalvat = userQuizRepository.save(userQuiz);
         return ResponseEntity.ok(userQuizSalvat);
     }
 
-    @DeleteMapping("/sterge")
-    public ResponseEntity<String> removeUserFromQuiz(HttpServletRequest request, @RequestParam long idQuiz, @RequestParam long idUserToRemove) {
+    @DeleteMapping("/sterge/{idQuiz}/{idUserToRemove}")
+    public ResponseEntity<String> removeUserFromQuiz(HttpServletRequest request, @PathVariable long idQuiz,
+                                                     @PathVariable long idUserToRemove) {
         Optional<Cookie> userCookie = Arrays.stream(request.getCookies())
                 .filter(cookie -> "userId".equals(cookie.getName()))
                 .findFirst();

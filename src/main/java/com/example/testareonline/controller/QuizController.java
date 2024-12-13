@@ -1,10 +1,11 @@
 package com.example.testareonline.controller;
 
+import com.example.testareonline.model.ParticipantDTO;
 import com.example.testareonline.model.Quiz;
+import com.example.testareonline.model.User;
 import com.example.testareonline.model.UserQuiz;
 import com.example.testareonline.repository.QuizRepository;
 import com.example.testareonline.repository.UserQuizRepository;
-import com.example.testareonline.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -110,6 +113,12 @@ public class QuizController {
         // Delete the quiz
         quizRepository.deleteById(id);
         return ResponseEntity.ok("Quiz deleted successfully!");
+    }
+
+    @GetMapping("/participanti/{idQuiz}")
+    public ResponseEntity<List<ParticipantDTO>> getParticipanti(@PathVariable long idQuiz) {
+        List<ParticipantDTO> participanti = userQuizRepository.findParticipantsByQuizId(idQuiz);
+        return ResponseEntity.ok(participanti);
     }
 
 }

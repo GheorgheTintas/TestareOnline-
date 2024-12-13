@@ -13,21 +13,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final CustomUserDetailsService customUserDetailsService;
 
     public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
 
-
     @Bean
     public static PasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder Encoder = new BCryptPasswordEncoder();
-        String s= Encoder.encode("test");
-        System.out.println(s+"**********");
-        return Encoder;
+        return new BCryptPasswordEncoder();
     }
-
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -36,6 +32,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // It allows HTTP requests without the need for CSRF tokens.
                 .authorizeRequests() //This method indicates that you're about to configure authorization rules for different URL patterns
                 .antMatchers("/login").permitAll() // no need to auth to access the endpoint
+                .antMatchers("/register").permitAll() // no need to auth to access the endpoint
+                .antMatchers("/page/register").permitAll() // no need to auth to access the endpoint
                 .antMatchers("/").permitAll()
                 .anyRequest().authenticated()// for any other request (anyRequest), the user must be authenticated to access it. In other words, to access any URL not explicitly configured with "permitAll," users must be logged in.
                 .and()

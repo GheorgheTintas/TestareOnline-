@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create quiz</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Create a New Quiz</h1>
+
+    <!-- Quiz Name -->
+    <div class="mb-3">
+        <label for="quizName" class="form-label">Quiz Name</label>
+        <input type="text" class="form-control" id="quizName" placeholder="Enter the quiz name">
+    </div>
+
+    <form id="quizForm">
+        <!-- Question Text -->
+        <div class="mb-3">
+            <label for="quizQuestion" class="form-label">Question</label>
+            <input type="text" class="form-control" id="quizQuestion" placeholder="Enter your question">
+        </div>
+
+        <!-- Answers -->
+        <div class="row">
+            <div class="col-md-6">
+                <label for="answer1" class="form-label">Answer 1</label>
+                <input type="text" class="form-control" id="answer1" placeholder="Enter Answer 1">
+            </div>
+            <div class="col-md-6">
+                <label for="answer2" class="form-label">Answer 2</label>
+                <input type="text" class="form-control" id="answer2" placeholder="Enter Answer 2">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <label for="answer3" class="form-label">Answer 3</label>
+                <input type="text" class="form-control" id="answer3" placeholder="Enter Answer 3">
+            </div>
+            <div class="col-md-6">
+                <label for="answer4" class="form-label">Answer 4</label>
+                <input type="text" class="form-control" id="answer4" placeholder="Enter Answer 4">
+            </div>
+        </div>
+
+        <!-- Correct Answer Selection -->
+        <div class="mt-4">
+            <label class="form-label">Select the Correct Answer</label>
+            <div>
+                <input type="radio" name="correctAnswer" id="correct1" value="1"> Answer 1
+                <input type="radio" name="correctAnswer" id="correct2" value="2"> Answer 2
+                <input type="radio" name="correctAnswer" id="correct3" value="3"> Answer 3
+                <input type="radio" name="correctAnswer" id="correct4" value="4"> Answer 4
+            </div>
+        </div>
+
+        <!-- Add Question Button -->
+        <button type="button" class="btn btn-primary mt-3" id="addQuestionButton">Add Question</button>
+    </form>
+
+    <!-- Added Questions List -->
+    <div class="mt-5">
+        <h2>Questions Added</h2>
+        <ul id="questionsList" class="list-group"></ul>
+    </div>
+
+    <!-- Save Quiz Button -->
+    <button type="button" class="btn btn-success mt-4" id="saveQuizButton">Save Quiz</button>
+</div>
+
+<script>
+
+let questionsCollection = [];
+
+// Event Listener for Add Question Button
+document.getElementById("addQuestionButton").addEventListener("click", () => {
+    // Get Values from Form
+    const questionText = document.getElementById("quizQuestion").value.trim();
+    const answer1 = document.getElementById("answer1").value.trim();
+    const answer2 = document.getElementById("answer2").value.trim();
+    const answer3 = document.getElementById("answer3").value.trim();
+    const answer4 = document.getElementById("answer4").value.trim();
+    const correctAnswer = document.querySelector('input[name="correctAnswer"]:checked');
+
+    // Validate Inputs
+    if (!questionText || !answer1 || !answer2 || !answer3 || !answer4 || !correctAnswer) {
+        alert("Please fill in all fields and select the correct answer.");
+        return;
+    }
+
+    // Get the correct answer text based on selected radio button
+    let correctAnswerText = '';
+    if (correctAnswer) {
+        switch (correctAnswer.value) {
+            case "1":
+                correctAnswerText = answer1;
+                break;
+            case "2":
+                correctAnswerText = answer2;
+                break;
+            case "3":
+                correctAnswerText = answer3;
+                break;
+            case "4":
+                correctAnswerText = answer4;
+                break;
+            default:
+                alert("Error: Invalid selection for correct answer.");
+                return;
+        }
+    }
+
+    // Create Question Object
+    const question = {
+        idQuiz: -1, // camp setat mai tarziu
+        descriereIntrebare: questionText,
+        variantaRaspuns1: answer1,
+        variantaRaspuns2: answer2,
+        variantaRaspuns3: answer3,
+        variantaRaspuns4: answer4,
+        variantaRaspunsCorecta: correctAnswerText
+    };
+
+    // Add to Questions Collection
+    questionsCollection.push(question);
+
+    // Clear Form
+    document.getElementById("quizForm").reset();
+
+    // Update Questions List
+    updateQuestionsList();
+});
+
+// Function to Update the Questions List in UI
+function updateQuestionsList() {
+    const questionList = document.getElementById("questionsList");
+    questionList.innerHTML = ""; // Clear existing list items
+
+    questionsCollection.forEach((question, index) => {
+        const listItem = document.createElement("li");
+        listItem.classList.add("list-group-item");
+        listItem.innerHTML = `
+            <strong>Question: </strong>${question.descriereIntrebare} <br>
+            <strong>Answer1: </strong> ${question.variantaRaspuns1} <br>
+            <strong>Answer2: </strong> ${question.variantaRaspuns2} <br>
+            <strong>Answer3: </strong> ${question.variantaRaspuns4} <br>
+            <strong>Answer4: </strong> ${question.answers} <br>
+            <strong>Correct Answer: </strong> ${question.variantaRaspunsCorecta} 
+            <button class="btn btn-danger btn-sm float-end deleteButton" data-index="${index}">Delete</button>
+        `;
+        questionList.appendChild(listItem);
+    });
+
+    // Add Event Listeners for Delete Buttons
+    const deleteButtons = document.querySelectorAll(".deleteButton");
+    deleteButtons.forEach(button => {
+        button.addEventListener("click", (e) => {
+            const questionIndex = e.target.getAttribute("data-index");
+            deleteQuestion(questionIndex);
+        });
+    });
+}
+
+// Function to Delete Question from Collection and UI
+function deleteQuestion(index) {
+    // Remove the question from the collection
+    questionsCollection.splice(index, 1);
+
+    // Update the displayed question list
+    updateQuestionsList();
+}
+
+// Event Listener for Save Quiz Button
+document.getElementById("saveQuizButton").addEventListener("click", () => {
+    if (questionsCollection.length === 0) {
+        alert("You must add at least one question before saving.");
+        return;
+    }
+
+    // Send the data to the backend
+    saveQuiz(questionsCollection);
+});
+
+// Function to Send Quiz Data to Backend
+function saveQuiz(questionsCollection) {
+    const quizName = document.getElementById("quizName").value.trim();
+
+    if (!quizName) {
+        alert("Please provide a name for the quiz.");
+        return;
+    }
+
+    if (questionsCollection.length === 0) {
+        alert("Please add at least one question.");
+        return;
+    }
+
+    const quiz = {
+        nume: quizName
+    };
+
+    // Save the quiz
+    fetch("/quiz/adauga", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(quiz)
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to save quiz");
+            }
+            return response.json();
+        })
+        .then(savedQuiz => {
+            if (savedQuiz && savedQuiz.id) {
+                const idQuiz = savedQuiz.id; // Extract the ID from the saved quiz
+                console.log(`Saved Quiz ID: ${idQuiz}`);
+
+                // Update each question with the quiz ID
+                questionsCollection.forEach(question => {
+                    question.idQuiz = idQuiz; // Add the quiz ID to each question
+                });
+
+                // Save the questions to the backend
+                return fetch("/intrebare/adauga", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(questionsCollection),
+                });
+            } else {
+                throw new Error("Quiz saved, but ID could not be retrieved.");
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to save questions");
+            }
+            return response.json();
+        })
+        .then(() => {
+            alert("Quiz and questions saved successfully! Redirecting to homepage...");
+            window.location.href = "/page/home"; // Redirect to homepage
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            alert("There was an error saving the quiz or questions. Please try again.");
+        });
+}
+
+
+
+</script>
+
+</body>
+
+</html>

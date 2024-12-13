@@ -17,6 +17,11 @@ public class UserQuiz {
     @Column(name = "punctaj")
     private Integer punctaj;
 
+    // ManyToOne relationship with User
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_user_participant", insertable = false, updatable = false)
+    private User user;
+
     public long getIdQuiz() {
         return idQuiz;
     }
@@ -39,6 +44,14 @@ public class UserQuiz {
 
     public void setPunctaj(Integer punctaj) {
         this.punctaj = punctaj;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Răspunsuri utilizator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Custom CSS to mark answers */
+        .correct {
+            background-color: #d4edda; /* Light green */
+            border-color: #c3e6cb;
+        }
+
+        .incorrect {
+            background-color: #f8d7da; /* Light red */
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Răspunsurile date de utilizator</h2>
+    <div id="quizResults" class="mt-4">
+        <!-- Dynamic content will be injected here -->
+    </div>
+    <button id="backToHome" class="btn btn-primary mt-3">Înapoi la Homepage</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Extract the quizId and participantId from the URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const idQuiz = urlParams.get("idQuiz");
+    const idUser = urlParams.get("idUser"); // The participant's ID
+
+    if (!idQuiz || !idUser) {
+        alert("ID-ul testului sau al participantului este invalid.");
+        window.location.href = "/page/home"; // Redirect to home page
+    }
+
+    // Fetch the quiz questions and user's answers
+    Promise.all([
+        fetch(`/intrebare/get/intrebari_cu_raspunsuri/${idQuiz}`), // Backend endpoint to get questions for the quiz
+        fetch(`/raspunsuri_intrebari/get/${idQuiz}/${idUser}`) // Backend endpoint to get the participant's answers
+    ])
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(([questions, userAnswers]) => {
+            if (!questions || questions.length === 0) {
+                document.getElementById("quizResults").innerHTML = "<p>Nu au fost găsite întrebări pentru acest test.</p>";
+                return;
+            }
+
+            if (!userAnswers || userAnswers.length === 0) {
+                document.getElementById("quizResults").innerHTML = "<p>Nu au fost găsite răspunsuri pentru acest test.</p>";
+                return;
+            }
+
+            // Populate the quiz results dynamically
+            const quizResultsContainer = document.getElementById("quizResults");
+
+            questions.forEach((question, index) => {
+                // Find the user's answer for this question
+                const userAnswer = userAnswers.find(answer => answer.idIntrebare === question.id);
+
+                if (!userAnswer) {
+                    return; // If no answer found for this question
+                }
+
+                // Determine if the answer is correct or incorrect
+                const isCorrect = userAnswer.raspunsDat === question.variantaRaspunsCorecta;
+                const answerClass = isCorrect ? 'correct' : 'incorrect';
+
+                const questionElement = `
+                <div class="card mb-3 ${answerClass}">
+                    <div class="card-header">
+                        Întrebarea ${index + 1}
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">${question.descriereIntrebare}</h5>
+                        <p><strong>Răspunsul dat: </strong>${userAnswer.raspunsDat}</p>
+                        <p><strong>Răspunsul corect: </strong>${question.variantaRaspunsCorecta}</p>
+                        <p><strong>Rezultatul: </strong>${isCorrect ? "Corect" : "Greșit"}</p>
+                    </div>
+                </div>
+            `;
+                quizResultsContainer.innerHTML += questionElement;
+            });
+        })
+        .catch(error => {
+            console.error("Eroare la încărcarea întrebărilor și răspunsurilor:", error);
+            document.getElementById("quizResults").innerHTML = "<p>Eroare la încărcarea datelor.</p>";
+        });
+
+    // Back to home button
+    document.getElementById("backToHome").addEventListener("click", () => {
+        window.location.href = "/page/home"; // Redirect to home page
+    });
+</script>
+</body>
+</html>
