@@ -1,4 +1,4 @@
-package com.example.testareonline.model;
+package com.example.testareonline.dto;
 
 public class CredentialeDTO {
     private String username;

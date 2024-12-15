@@ -23,7 +23,7 @@
     <h1 class="text-center">Teste create</h1>
     <!-- Create Quiz Button -->
     <div class="text-end mb-4">
-        <button class="btn btn-primary" id="createQuizButton">Create Quiz</button>
+        <button class="btn btn-primary" id="createQuizButton">Creează test</button>
     </div>
     <div class="alert alert-info text-center" id="loading" style="display: none;">
         Se încarcă testele create...
@@ -133,7 +133,7 @@
             })
             .catch(error => {
                 console.error("Logout failed:", error);
-                alert("An error occurred. Please try again.");
+                alert("Eroare în timpul delogării.");
             });
     });
 

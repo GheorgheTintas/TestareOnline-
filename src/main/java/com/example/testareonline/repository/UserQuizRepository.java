@@ -1,6 +1,6 @@
 package com.example.testareonline.repository;
 
-import com.example.testareonline.model.ParticipantDTO;
+import com.example.testareonline.dto.ParticipantDTO;
 import com.example.testareonline.model.UserQuiz;
 import com.example.testareonline.model.UserQuizPK;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +18,7 @@ public interface UserQuizRepository extends CrudRepository<UserQuiz, UserQuizPK>
     UserQuiz findByIdQuizAndIdUserParticipant(long idQuiz, long idUserParticipant);
 
     // Query to fetch participants with their ids, usernames, and scores
-    @Query("SELECT new com.example.testareonline.model.ParticipantDTO(uq.idUserParticipant, u.username, uq.punctaj) " +
+    @Query("SELECT new com.example.testareonline.dto.ParticipantDTO(uq.idUserParticipant, u.username, uq.punctaj) " +
             "FROM UserQuiz uq " +
             "JOIN uq.user u " +
             "WHERE uq.idQuiz = :idQuiz")

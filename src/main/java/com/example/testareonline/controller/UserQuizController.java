@@ -1,12 +1,13 @@
 package com.example.testareonline.controller;
 
-import com.example.testareonline.model.Quiz;
-import com.example.testareonline.model.UserQuiz;
-import com.example.testareonline.model.UserQuizPK;
+import com.example.testareonline.dto.ParticipantDTO;
+import com.example.testareonline.model.*;
 import com.example.testareonline.repository.QuizRepository;
 import com.example.testareonline.repository.UserQuizRepository;
+import com.example.testareonline.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -17,10 +18,16 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value="/user_quiz")
 public class UserQuizController {
+
     @Autowired
     private UserQuizRepository userQuizRepository;
     @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private QuizRepository quizRepository;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
 
     @PostMapping("/adauga/{idQuiz}")
     public ResponseEntity<Object> joinQuiz(HttpServletRequest request, @PathVariable long idQuiz) {
@@ -54,6 +61,17 @@ public class UserQuizController {
         userQuiz.setPunctaj(-1);
 
         UserQuiz userQuizSalvat = userQuizRepository.save(userQuiz);
+
+        Optional<User> userOptional = userRepository.findById(idUser);
+        if (userOptional.isEmpty()){
+            return ResponseEntity.status(403).body("User not found.");
+        }
+        User user = userOptional.get();
+        ParticipantDTO participant = new ParticipantDTO(idUser, user.getUsername(), -1);
+
+        // Notify participants about the new participant
+        messagingTemplate.convertAndSend("/topic/" + idQuiz, participant);
+
         return ResponseEntity.ok(userQuizSalvat);
     }
 

@@ -1,8 +1,7 @@
 package com.example.testareonline.controller;
 
-import com.example.testareonline.model.ParticipantDTO;
+import com.example.testareonline.dto.ParticipantDTO;
 import com.example.testareonline.model.Quiz;
-import com.example.testareonline.model.User;
 import com.example.testareonline.model.UserQuiz;
 import com.example.testareonline.repository.QuizRepository;
 import com.example.testareonline.repository.UserQuizRepository;
@@ -20,14 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-
 @RequestMapping(value = "/quiz")
-
 public class QuizController {
     @Autowired
     private QuizRepository quizRepository;
@@ -45,6 +41,7 @@ public class QuizController {
         }
         return new ResponseEntity<>(quizRepository.findByIdUserOwner(userId), HttpStatus.OK);
     }
+
     @PostMapping("/adauga")
     public ResponseEntity<Object> adaugaQuiz(@RequestBody Quiz quiz, HttpServletRequest request) {
         // Retrieve "idUserOwner" from cookies

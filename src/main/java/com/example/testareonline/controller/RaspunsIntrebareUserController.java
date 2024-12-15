@@ -1,20 +1,15 @@
 package com.example.testareonline.controller;
 
-import com.example.testareonline.model.Intrebare;
-import com.example.testareonline.model.Quiz;
-import com.example.testareonline.model.RaspunsIntrebareUser;
-import com.example.testareonline.model.UserQuiz;
-import com.example.testareonline.repository.IntrebareRepository;
-import com.example.testareonline.repository.QuizRepository;
-import com.example.testareonline.repository.RaspunsIntrebareUserRepository;
-import com.example.testareonline.repository.UserQuizRepository;
+import com.example.testareonline.dto.ParticipantDTO;
+import com.example.testareonline.model.*;
+import com.example.testareonline.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -22,14 +17,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "/raspunsuri_intrebari")
 public class RaspunsIntrebareUserController {
-    @Autowired
-    private QuizRepository quizRepository;
+
     @Autowired
     private RaspunsIntrebareUserRepository raspunsIntrebareUserRepository;
     @Autowired
     private IntrebareRepository intrebareRepository;
     @Autowired
+    private QuizRepository quizRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
     private UserQuizRepository userQuizRepository;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/get/{idQuiz}/{idParticipant}") // Return answers submitted by a participant for a specific quiz
     public ResponseEntity<List<RaspunsIntrebareUser>> getRaspunsuriParticipant(
@@ -113,19 +113,33 @@ public class RaspunsIntrebareUserController {
         }
 
         // Save the answers for the user
-        List<RaspunsIntrebareUser> listaRaspunsuri = new ArrayList<>();
         for (RaspunsIntrebareUser raspuns : raspunsuri) {
-
             raspuns.setIdUser(idUser); // Set the logged in user ID
-            RaspunsIntrebareUser raspunsIntrebareUserSalvat = raspunsIntrebareUserRepository.save(raspuns);// Save the answer
-            listaRaspunsuri.add(raspunsIntrebareUserSalvat);
+            raspunsIntrebareUserRepository.save(raspuns);// Save the answer
         }
 
         int punctaj = calculeazaPunctaj(idUser, idQuiz);
 
+        // Update the score in the UserQuiz table
+        UserQuiz userQuiz = userQuizRepository.findByIdQuizAndIdUserParticipant(idQuiz, idUser);
+        if (userQuiz == null) {
+            return ResponseEntity.badRequest().body(-1);
+        }
+
+        userQuiz.setPunctaj(punctaj);
+        userQuizRepository.save(userQuiz);
+
+        Optional<User> userOptional = userRepository.findById(idUser);
+        if (userOptional.isEmpty()){
+            return ResponseEntity.status(403).body("User not found.");
+        }
+        User user = userOptional.get();
+        ParticipantDTO participant = new ParticipantDTO(idUser, user.getUsername(), punctaj);
+
+        // Notify owner about the participant's completion
+        messagingTemplate.convertAndSend("/topic/" + idQuiz, participant);
         return ResponseEntity.ok(punctaj);
     }
-
 
     private int calculeazaPunctaj(long idUser, long idQuiz) {
         try {
@@ -144,13 +158,6 @@ public class RaspunsIntrebareUserController {
                         punctaj += 1; // Increment score for correct answers
                     }
                 }
-            }
-
-            // Update the score in the UserQuiz table
-            UserQuiz userQuiz = userQuizRepository.findByIdQuizAndIdUserParticipant(idQuiz, idUser);
-            if (userQuiz != null) {
-                userQuiz.setPunctaj(punctaj);
-                userQuizRepository.save(userQuiz);
             }
 
             return punctaj;

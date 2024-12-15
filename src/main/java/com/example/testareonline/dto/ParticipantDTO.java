@@ -1,9 +1,9 @@
-package com.example.testareonline.model;
+package com.example.testareonline.dto;
 
 public class ParticipantDTO {
-    private long id;        // Add the participant's id
+    private long id;
     private String username;
-    private int punctaj;    // The score the user received for the quiz
+    private int punctaj;
 
     // Constructor including id, username, and score
     public ParticipantDTO(long id, String username, int punctaj) {

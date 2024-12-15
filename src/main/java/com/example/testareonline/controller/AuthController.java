@@ -1,6 +1,6 @@
 package com.example.testareonline.controller;
 
-import com.example.testareonline.model.CredentialeDTO;
+import com.example.testareonline.dto.CredentialeDTO;
 import com.example.testareonline.model.User;
 import com.example.testareonline.repository.UserRepository;
 import org.springframework.http.HttpStatus;
