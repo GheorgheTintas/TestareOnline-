@@ -4,45 +4,355 @@
 <head>
     <meta charset="UTF-8">
     <title>Pagina de Autentificare</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: white;
+        }
+        .banner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex; /* Textul este pe o singură linie */
+            justify-content: center; /* Centrează textul pe orizontală */
+            align-items: center; /* Centrează textul pe verticală */
+            width: 100%; /* Acoperă întreaga lățime a paginii */
+            height: calc(6.25vw - 2px); /* Dimensiune identică cu span-urile */
+            font-size: 1.8rem; /* Dimensiune font ajustată */
+            font-weight: bold; /* Text evidențiat */
+            color: black; /* Text negru */
+            background: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Adaugă o umbră subtilă */
+            text-transform: uppercase; /* Transformă textul în majuscule */
+            letter-spacing: 0.1em; /* Spațiere între litere */
+            z-index: 1000; /* Deasupra altor elemente */
+        }
+
+
+        section {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(black,white, black);
+            animation: animate 5s linear infinite;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-100%);
+            }
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        section span {
+            position: relative;
+            display: block;
+            width: calc(6.25vw - 2px);
+            height: calc(6.25vw - 2px);
+            background: white;
+            z-index: 2;
+            transition: 1.5s;
+        }
+
+        section span:hover {
+            background: black;
+            transition: 0s;
+        }
+
+
+        .signin {
+            position: absolute;
+            width: 500px; /* Crește lățimea */
+            background: black;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px; /* Crește padding-ul pentru mai mult spațiu */
+            border-radius: 10px; /* Rotunjire mai evidentă */
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+        }
+
+        .signin .content h2 {
+            font-size: 2.5em; /* Font mai mare pentru titlu */
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .signin .content .form .inputBox {
+            width: 100%; /* Input-urile ocupă toată lățimea */
+            margin-bottom: 20px; /* Spațiere între input-uri */
+        }
+
+        .signin .content .form .inputBox input {
+            width: 100%; /* Ocupă lățimea completă */
+            padding: 15px 20px; /* Crește padding-ul pentru input */
+            font-size: 1.1em; /* Font mai mare */
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .signin .content .form .inputBox input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Efect focus mai vizibil */
+        }
+
+        .signin .content .form .inputBox input[type="submit"] {
+            padding: 15px; /* Crește padding-ul pentru buton */
+            font-size: 1.2em; /* Font mai mare */
+            background: white;
+            color: black;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .signin .content .form .inputBox input[type="submit"]:hover {
+            background: darkblue;
+        }
+
+        .signin .content p {
+            font-size: 1.1em; /* Font mai mare pentru text */
+            color: #fff;
+            margin-top: 20px;
+        }
+
+        .signin .content p a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .signin .content p a:hover {
+            text-decoration: underline;
+        }
+
+
+        @media (max-width: 900px) {
+            section span {
+                width: calc(10vw - 2px);
+                height: calc(10vw - 2px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            section span {
+                width: calc(20vw - 2px);
+                height: calc(20vw - 2px);
+            }
+        }
+    </style>
 </head>
 
 <body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Autentificare
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="username">Nume utilizator</label>
-                        <input type="text" class="form-control" id="username" placeholder="Introduceți numele de utilizator">
+<div class="banner">
+    My Quiz App - Aplicație de Testare Online
+</div>
+s
+<section>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+
+
+
+    <div class="signin">
+        <div class="content">
+            <h2>Autentificare</h2>
+            <form id="loginForm">
+                <div class="form">
+                    <div class="inputBox">
+                        <input type="text" id="username" placeholder="Introduceți numele de utilizator" required>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Parolă</label>
-                        <input type="password" class="form-control" id="password" placeholder="Introduceți parola">
+                    <div class="inputBox">
+                        <input type="password" id="password" placeholder="Introduceți parola" required>
                     </div>
-                    <button class="btn btn-primary" id="submitBtn">Autentificare</button>
-                    <hr>
-                    <p>Nu aveți un cont? <a href="/page/register">Înregistrați-vă aici</a></p> <!-- Link către pagina de înregistrare -->
+                    <div class="inputBox">
+                        <input type="submit" value="Autentificare">
+                    </div>
                 </div>
-            </div>
+            </form>
+            <p>Nu aveți un cont? <a href="/page/register">Înregistrați-vă aici</a></p>
         </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("submitBtn").addEventListener("click", (event) => {
-            event.preventDefault();
-            submitLoginForm();
-        });
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitLoginForm();
     });
 
     function submitLoginForm() {
@@ -50,8 +360,6 @@
             username: document.getElementById("username").value,
             parola: document.getElementById("password").value
         };
-
-        console.log(credentialeDTO);
 
         fetch("/login", {
             method: "POST",
@@ -62,7 +370,6 @@
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Autentificare reușită");
                     window.location.href = "/page/home";
                 } else {
                     response.json().then(data => {
@@ -71,7 +378,6 @@
                 }
             })
             .catch(error => {
-                console.error("A apărut o eroare:", error);
                 alert("A apărut o eroare. Vă rugăm să încercați din nou.");
             });
     }

@@ -4,49 +4,320 @@
 <head>
     <meta charset="UTF-8">
     <title>Pagina de Înregistrare</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: white;
+        }
+
+        section {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+            flex-wrap: wrap;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(#000, white , #000);
+            animation: animate 5s linear infinite;
+        }
+
+        @keyframes animate {
+            0% {
+                transform: translateY(-100%);
+            }
+
+            100% {
+                transform: translateY(100%);
+            }
+        }
+
+        section span {
+            position: relative;
+            display: block;
+            width: calc(6.25vw - 2px);
+            height: calc(6.25vw - 2px);
+            background: white;
+            z-index: 2;
+            transition: 1.5s;
+        }
+
+        section span:hover {
+            background: black;
+            transition: 0s;
+        }
+
+        .signin {
+            position: absolute;
+            width: 500px;
+            background: black;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+        }
+
+        .signin .content h2 {
+            font-size: 2.5em;
+            color: white;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .signin .content .form .inputBox {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .signin .content .form .inputBox input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .signin .content .form .inputBox input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        }
+
+        .signin .content .form .inputBox input[type="submit"] {
+            padding: 15px;
+            font-size: 1.2em;
+            background: white;
+            color: black;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .signin .content .form .inputBox input[type="submit"]:hover {
+            background: darkblue;
+        }
+
+        .signin .content p {
+            font-size: 1.1em;
+            color: #fff;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .signin .content p a {
+            color: blue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .signin .content p a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Înregistrare
+<section>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+
+    <div class="signin">
+        <div class="content">
+            <h2>Înregistrare</h2>
+            <form id="registerForm">
+                <div class="form">
+                    <div class="inputBox">
+                        <input type="text" id="username" placeholder="Introduceți numele de utilizator" required>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="password" placeholder="Introduceți parola" required>
+                    </div>
+                    <div class="inputBox">
+                        <input type="password" id="confirmPassword" placeholder="Confirmați parola" required>
+                    </div>
+                    <div class="inputBox">
+                        <input type="submit" value="Înregistrare">
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <label for="username">Nume utilizator</label>
-                        <input type="text" class="form-control" id="username"
-                               placeholder="Introduceți numele de utilizator">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Parolă</label>
-                        <input type="password" class="form-control" id="password" placeholder="Introduceți parola">
-                    </div>
-                    <div class="form-group">
-                        <label for="confirmPassword">Confirmați parola</label>
-                        <input type="password" class="form-control" id="confirmPassword"
-                               placeholder="Confirmați parola">
-                    </div>
-                    <button class="btn btn-primary" id="submitBtn">Înregistrare</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</section>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("submitBtn").addEventListener("click", (event) => {
-            event.preventDefault();
-            submitRegistrationForm();
-        });
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        submitRegistrationForm();
     });
 
     function submitRegistrationForm() {
@@ -54,7 +325,6 @@
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
 
-        // Validate form
         if (!username || !password || !confirmPassword) {
             alert("Completați toate câmpurile.");
             return;
@@ -79,7 +349,6 @@
         })
             .then(response => {
                 if (response.ok) {
-                    console.log("Înregistrare reușită");
                     window.location.href = "/";
                 } else {
                     response.json().then(data => {
@@ -88,10 +357,10 @@
                 }
             })
             .catch(error => {
-                console.error("A apărut o eroare:", error);
                 alert("A apărut o eroare. Vă rugăm să încercați din nou.");
             });
     }
 </script>
 </body>
+
 </html>
